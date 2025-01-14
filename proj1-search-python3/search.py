@@ -87,17 +87,57 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    pile = util.Stack()
+    visited = set()
+    pile.push((problem.getStartState(), []))
+    
+    while not pile.isEmpty():
+        state, path = pile.pop()
+        if problem.isGoalState(state):
+            return path
+        if state not in visited:
+            visited.add(state)
+            for successor, action, cost in problem.getSuccessors(state):
+                if successor not in visited:
+                    pile.push((successor, path + [action]))
+
+    return []
+    
+    
 
 def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    pile = util.Queue()
+    visited = set()
+    pile.push((problem.getStartState(), []))
+    
+    while not pile.isEmpty():
+        state, path = pile.pop()
+        if problem.isGoalState(state):
+            return path
+        if state not in visited:
+            visited.add(state)
+            for successor, action, cost in problem.getSuccessors(state):
+                if successor not in visited:
+                    pile.push((successor, path + [action]))
+
+    return []
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    pile = util.PriorityQueue()
+    visited = set()
+    pile.push((problem.getStartState(), [], 0), 0)
+    while not pile.isEmpty():
+        state, path, cost = pile.pop()
+        if problem.isGoalState(state):
+            return path
+        if state not in visited:
+            visited.add(state)
+            for successor, action, stepCost in problem.getSuccessors(state):
+                if successor not in visited:
+                    pile.push((successor, path + [action], cost + stepCost), cost + stepCost)
+    return []
 
 def nullHeuristic(state, problem=None):
     """
